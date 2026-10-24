@@ -26,9 +26,16 @@ export const errorCopy: Record<ClientErrorCode, string> = {
   NETWORK: "We couldn't connect. Check your internet and try again.",
 };
 
-export function errorMessage(err: unknown): string {
+/** The copy deck's AI errors talk about photos. On the email screen they need different words. */
+export const emailErrorCopy: Partial<Record<ClientErrorCode, string>> = {
+  AI_UNAVAILABLE: "We couldn't reach the email writer. Nothing was sent. Try again.",
+  AI_INVALID_OUTPUT: "We couldn't write a reliable email this time. Try again.",
+};
+
+export function errorMessage(err: unknown, overrides: Partial<Record<ClientErrorCode, string>> = {}): string {
   if (typeof err === "object" && err !== null && "code" in err) {
     const code = (err as { code: string }).code as ClientErrorCode;
+    if (overrides[code]) return overrides[code];
     if (code in errorCopy) return errorCopy[code];
   }
   return "Something went wrong. Try again.";

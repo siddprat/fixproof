@@ -374,3 +374,8 @@ ul.plain { list-style: none; padding: 0; margin: 0; }
 .save-ok { margin-top: var(--space-3); }
 /* Grow textareas with their content where supported; rows is the fallback. */
 @supports (field-sizing: content) { textarea { field-sizing: content; min-height: 6rem; } }
+
+/* ---------- Email ---------- */
+.email-result { margin-top: var(--space-5); }
+.email-result h2 { margin-top: 0; }
+fieldset fieldset { margin-bottom: var(--space-5); }
