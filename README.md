@@ -58,7 +58,7 @@ flowchart LR
 
 ## Model and license <!-- owner: Sid -->
 
-The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. The first live image request returned AI_UNAVAILABLE. Key and request compatibility are being checked.
+The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. Model access, image input, system instructions, and structured JSON passed live checks. A generated image completed the save, edit, verify, and delete flow. Real housing-photo and email checks remain pending.
 
 - [Google's Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api)
 - [Model card](https://ai.google.dev/gemma/docs/core/model_card_4) and [Apache 2.0 model license](https://www.apache.org/licenses/LICENSE-2.0)
@@ -108,9 +108,17 @@ npm run build --prefix api
 npm test --prefix api
 ```
 
+Once the six staged photos listed in `docs/test-photos/README.md` are supplied, run:
+
+```sh
+npm run eval --prefix api -- https://fixproof-774631300212.us-east1.run.app
+```
+
+This writes `docs/EVAL.md` and deletes its evaluation case. The report records missing photos without inventing results. A human must review observations as well as the automated field checks.
+
 ## Deploy to Google Cloud <!-- owner: Sid -->
 
-Project: `fixproof-512621`. Region: `us-east1`. The full app deployed successfully. The live model check returned AI_UNAVAILABLE; investigation is in progress.
+Project: `fixproof-512621`. Region: `us-east1`. The full app deployed successfully. Revision `fixproof-00003-ljj` passed the live generated-image check. A real housing photo and the full phone flow still need testing.
 
 Services enabled: Cloud Run, Cloud Build, Artifact Registry, Firestore, Cloud Storage, and Secret Manager. Firestore uses native mode. The bucket `fixproof-512621-fixproof-photos` was created with uniform access and public access prevention.
 

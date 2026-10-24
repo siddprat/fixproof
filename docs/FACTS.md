@@ -1,49 +1,51 @@
 # Checked project facts
 
-Checked on 2026-10-24. Cloud setup results were supplied by Sid from Terminal.
+Last checked on 2026-10-24. Cloud setup and live diagnostic results were supplied by Sid from Terminal unless noted.
 
 | Fact | Value | Status |
 | --- | --- | --- |
-| Project ID | `fixproof-512621` | Confirmed by Sid |
-| Region | `us-east1` | Confirmed in Firestore output |
-| Firestore | `(default)`, native mode | Creation succeeded |
-| Photo bucket | `fixproof-512621-fixproof-photos` | Create command returned without error; read-back check pending |
-| Bucket access | Uniform access and public access prevention requested | Read-back check pending |
+| Project ID | `fixproof-512621` | Confirmed |
+| Region | `us-east1` | Confirmed |
+| Firestore | `(default)`, native mode | Live create, save, edit, and delete passed |
+| Photo bucket | `fixproof-512621-fixproof-photos` | Live upload, download, hash check, and cleanup passed |
+| Bucket access | Uniform access and public access prevention requested at creation | Independent settings read-back pending |
 | Required Cloud APIs | Run, Build, Artifact Registry, Firestore, Storage, Secret Manager | Enable operation succeeded |
-| Exact Gemma model ID | `gemma-4-26b-a4b-it` | Selected with Sid on 2026-10-24; live request pending |
-| Model license URL | https://www.apache.org/licenses/LICENSE-2.0 | Listed by Google model card on 2026-10-24 |
-| Hosted API terms URL | https://ai.google.dev/gemini-api/terms | Review pending |
-| Cloud Run URL | https://fixproof-774631300212.us-east1.run.app | Full app revision fixproof-00002-zg4 deployed; Sid supplied successful output on 2026-10-24 |
+| Exact Gemma model ID | `gemma-4-26b-a4b-it` | Live access and generation passed |
+| Model license | [Apache 2.0](https://www.apache.org/licenses/LICENSE-2.0) | Listed by [Google model card](https://ai.google.dev/gemma/docs/core/model_card_4) |
+| Hosted API terms | https://ai.google.dev/gemini-api/terms | Official terms link |
+| Cloud Run URL | https://fixproof-774631300212.us-east1.run.app | Revision `fixproof-00003-ljj` serving traffic |
+| App identity | `fixproof-run@fixproof-512621.iam.gserviceaccount.com` | Dedicated service account |
+| API key storage | Secret Manager, `gemini-api-key`, version 2 | Validated, saved, and attached to the live revision |
 | Hackathon credit and budget alert | Pending confirmation | Not verified |
 
-No API keys belong in this file.
+Never put API keys in this file.
 
-## Model sources
+## Gemma API capabilities
 
-- https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api lists the selected model and image input.
-- https://ai.google.dev/gemma/docs/core/model_card_4 lists Apache 2.0 as the model license.
-- Google documents system instructions and image input for this model. JSON mode and response schema support are not documented on that Gemma page. The service attempts structured output and falls back to prompt-only JSON only after an explicit unsupported-feature error. Live capability testing is still pending.
+The direct diagnostic passed for the selected model on 2026-10-24:
 
-## Deployment identity
+- Model access and basic text generation.
+- Image input with a system instruction.
+- FixProof's JSON MIME type and response JSON schema in the same request.
 
-The deployment script creates a dedicated `fixproof-run` service account. It can access the API key secret, Firestore, and the photo bucket. The key stays in Secret Manager.
+Several images in one real model request still need testing. The API's three-photo upload path passes local tests. The [official Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api) also documents image input and system instructions.
 
-## Validation status
+## Live validation
 
-- Sid ran the initial build and two checks successfully before the first deploy.
-- The expanded API builds locally and passes 15 automated checks as of 2026-10-24.
-- Local route checks use in-memory test storage. They do not prove Cloud permissions or model quality.
-- The next deploy includes the frontend and runs a generated-image smoke check against real storage and the configured model. It deletes its test case afterward.
-- A human photo, adversarial-photo evaluation, phone test, and joint frontend test remain pending.
+Sid ran `scripts/update-key.sh` successfully. The generated solid-color image completed photo upload, model analysis, entry save, hash verification, edit, and deletion. Email was skipped because the image was not a housing concern. Case deletion checks that the stored files and entry records are gone before returning success.
 
-## Live check of revision fixproof-00002-zg4
+This proves connectivity and the basic pipeline. It does not establish model accuracy on real apartment photos. A real housing photo, email generation, adversarial-photo checks, a phone test, and the joint frontend flow remain pending.
 
-Sid supplied the deployment output on 2026-10-24. Both frontend and API built and deployed. The generated-image request returned `502 AI_UNAVAILABLE`. The test case was deleted successfully. Key validity and model request compatibility are not yet established. Do not call the real-model integration complete.
+The expanded API also builds and passes 15 local checks. Route tests use in-memory storage. The container build for both frontend and API passed during the full-app deployment.
 
-## Authentication failure confirmed in Cloud Run logs
+## Resolved setup issues
 
-On 2026-10-24, the browser-visible Cloud Run logs for the 18:22:35 EDT test show `model_request_failed` with provider status `401`. The entries request lasted about 274 milliseconds. This identifies an authentication failure, not a timeout or a 429 rate-limit response. The validity and intended service of the saved key still need the direct diagnostic; no replacement key has been requested or installed.
+The original saved credential was rejected by the Gemini API with HTTP 401 and `ACCESS_TOKEN_TYPE_UNSUPPORTED`. The replacement key passed model access but encountered HTTP 402 while the prepaid balance was empty. Sid resolved account setup and billing. The subsequent generation and live pipeline checks passed. No secret values were recorded.
 
-## Direct saved-key diagnostic
+## Privacy and local mode
 
-Sid supplied the direct diagnostic output on 2026-10-24. Both GetModel and ListModels returned HTTP 401, UNAUTHENTICATED, with reason ACCESS_TOKEN_TYPE_UNSUPPORTED from generativelanguage.googleapis.com. The saved credential is not accepted by the Gemini API. This fails before image input or JSON options are tested. A correctly created AI Studio key must be checked before updating the service.
+Hosted mode sends processed photos and notes to Google through the Gemini API. Local mode uses Ollama for inference; this deployment still stores photos and reports in Google Cloud. Local inference has not yet been tested on a laptop.
+
+## Repository check
+
+A scan of all locally available Git history on 2026-10-24 found no candidate Google API keys, GitHub tokens, Google access tokens, or private-key blocks. This pattern scan is not a guarantee against every secret format.
