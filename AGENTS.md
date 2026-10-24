@@ -24,7 +24,7 @@ The exact submission deadline is not confirmed. Assume Sunday afternoon and ask 
 ## Stack (decided, do not relitigate)
 
 - Language: TypeScript everywhere, strict mode.
-- `web/`: Vite, React, react-router-dom, plain CSS. No UI framework.
+- `web/`: Vite, React, react-router-dom, and shadcn/ui. Sid approved shadcn/ui on Oct 24, 2026, replacing the original plain-CSS-only and no-UI-framework restriction. The frontend agent owns styling setup.
 - `api/`: Node 20, Express, zod, multer (memory storage), sharp, exifr, express-rate-limit, @google/genai, @google-cloud/firestore, @google-cloud/storage.
 - Hosting: ONE Cloud Run service serves the API under `/api` and the built frontend (`web/dist`) as static files with SPA fallback. One deploy, no CORS.
 - Data: Firestore (native mode) for cases and entries. Cloud Storage (private bucket) for photos.
