@@ -12,7 +12,8 @@
     "start": "node --env-file-if-exists=../.env dist/server.js",
     "test": "node --import tsx --test test/*.test.ts",
     "try-analyze": "node --env-file-if-exists=../.env --import tsx scripts/try-analyze.ts",
-    "smoke": "node --import tsx scripts/smoke.ts"
+    "smoke": "node --import tsx scripts/smoke.ts",
+    "eval": "node --import tsx scripts/eval.ts"
   },
   "dependencies": {
     "express": "^5.1.0",
