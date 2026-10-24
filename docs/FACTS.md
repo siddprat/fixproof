@@ -13,7 +13,7 @@ Checked on 2026-10-24. Cloud setup results were supplied by Sid from Terminal.
 | Exact Gemma model ID | `gemma-4-26b-a4b-it` | Selected with Sid on 2026-10-24; live request pending |
 | Model license URL | https://www.apache.org/licenses/LICENSE-2.0 | Listed by Google model card on 2026-10-24 |
 | Hosted API terms URL | https://ai.google.dev/gemini-api/terms | Review pending |
-| Cloud Run URL | https://fixproof-774631300212.us-east1.run.app | Initial health-only revision deployed; Sid supplied successful output on 2026-10-24 |
+| Cloud Run URL | https://fixproof-774631300212.us-east1.run.app | Full app revision fixproof-00002-zg4 deployed; Sid supplied successful output on 2026-10-24 |
 | Hackathon credit and budget alert | Pending confirmation | Not verified |
 
 No API keys belong in this file.
@@ -35,3 +35,7 @@ The deployment script creates a dedicated `fixproof-run` service account. It can
 - Local route checks use in-memory test storage. They do not prove Cloud permissions or model quality.
 - The next deploy includes the frontend and runs a generated-image smoke check against real storage and the configured model. It deletes its test case afterward.
 - A human photo, adversarial-photo evaluation, phone test, and joint frontend test remain pending.
+
+## Live check of revision fixproof-00002-zg4
+
+Sid supplied the deployment output on 2026-10-24. Both frontend and API built and deployed. The generated-image request returned `502 AI_UNAVAILABLE`. The test case was deleted successfully. Key validity and model request compatibility are not yet established. Do not call the real-model integration complete.

@@ -58,7 +58,7 @@ flowchart LR
 
 ## Model and license <!-- owner: Sid -->
 
-The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. The first real model request is pending.
+The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. The first live image request returned AI_UNAVAILABLE. Key and request compatibility are being checked.
 
 - [Google's Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api)
 - [Model card](https://ai.google.dev/gemma/docs/core/model_card_4) and [Apache 2.0 model license](https://www.apache.org/licenses/LICENSE-2.0)
@@ -110,7 +110,7 @@ npm test --prefix api
 
 ## Deploy to Google Cloud <!-- owner: Sid -->
 
-Project: `fixproof-512621`. Region: `us-east1`. The initial health-only deploy succeeded. The full app deploy and real-model smoke check remain pending.
+Project: `fixproof-512621`. Region: `us-east1`. The full app deployed successfully. The live model check returned AI_UNAVAILABLE; investigation is in progress.
 
 Services enabled: Cloud Run, Cloud Build, Artifact Registry, Firestore, Cloud Storage, and Secret Manager. Firestore uses native mode. The bucket `fixproof-512621-fixproof-photos` was created with uniform access and public access prevention.
 
