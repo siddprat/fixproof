@@ -31,14 +31,18 @@ const pairs = [
   ["on-primary", "primary-hover", 4.5, "primary button hover"],
   ["hazard-text", "hazard-bg", 4.5, "hazard banner"],
   ["hazard-text", "surface", 4.5, "danger button, field errors"],
+  ["hazard-text", "bg", 4.5, "danger button on page"],
+  ["text-muted", "info-bg", 4.5, "muted text in info notices"],
+  ["warn-text", "bg", 4.5, "mock flag"],
   ["warn-text", "warn-bg", 4.5, "warning panel"],
   ["ok-text", "ok-bg", 4.5, "ok notice"],
   ["info-text", "info-bg", 4.5, "info notice"],
   ["border-strong", "surface", 3, "input borders (non-text)"],
-  ["border-strong", "bg", 3, "button borders on page (non-text)"],
+  ["border-strong", "bg", 3, "input borders on page (non-text)"],
   ["focus", "bg", 3, "focus ring on page (non-text)"],
   ["focus", "surface", 3, "focus ring in cards (non-text)"],
-  ["hazard-border", "surface", 3, "danger button border (non-text)"],
+  ["hazard-border", "surface", 3, "invalid field border (non-text)"],
+  ["primary", "surface", 3, "selected choice border (non-text)"],
 ];
 
 let failed = 0;

@@ -21,7 +21,7 @@ The 18 states: log empty, log with entries, delete dialog open, capture empty, c
 | Check | Result |
 | --- | --- |
 | Keyboard only, full flow: add photo, dictate, analyze, change urgency with arrow keys, save, write email, copy, report, delete dialog | Works with no mouse |
-| Tab walk from the top of each page (log, capture, 3 analysis states, email, report) | Skip link is the first stop on every page. Every stop shows a 3 px focus ring. No traps. |
+| Tab walk from the top of each page (log, capture, 3 analysis states, email, report) | Skip link is the first stop on every page. Every stop shows a focus ring (2 px blue since Run 2). No traps. |
 | Tap targets | Every button and form control is at least 44 px. (Inline text links are exempt.) |
 | Focus after navigation | Moves to the page `h1` on every route change. Not on first load, so the skip link stays first. |
 | Focus after analysis | Lands on the analysis page `h1` |
@@ -42,6 +42,23 @@ The 18 states: log empty, log with entries, delete dialog open, capture empty, c
 - The observations box was too short on phones and cut off text. It now grows with its content.
 - The email screen used photo wording for AI errors ("Your photos were not saved"). It now has its own wording.
 - Added "Dictate your note" (F28). It is hidden when the browser has no speech recognition, uses `aria-pressed`, and announces start and stop. It says plainly that the browser's speech service may send audio to Google or Apple.
+
+## Run 2: Sat Oct 24, 2026, about 7:30pm (mock data, after the visual restyle)
+
+The UI was restyled to follow the shadcn/ui look (neutral zinc palette, soft cards, pill badges) in plain CSS. No new libraries, no markup changes.
+
+| Check | Result |
+| --- | --- |
+| axe-core, same 36 runs as Run 1 | 0 violations |
+| Lighthouse, mobile, production build: `/`, an analysis page, `/report` | Accessibility 100, Best Practices 100 on all three. Performance 96, 100, 99. |
+| `npm run contrast`, 25 pairs | all pass. Lowest text pair 6.79:1. Input borders 3.55:1 (need 3). Focus ring 4.95:1 (need 3). |
+| Keyboard walks, dialog, reflow at 320 px and 200 percent zoom, all screen tests | all pass |
+
+Changes that matter for accessibility:
+
+- Focus ring is now 2 px blue (`#2563eb`) with a 2 px gap, so it stands out from the gray and black UI.
+- The header is sticky only on screens 48rem and wider, where it is one row. On phones it scrolls away, so it cannot cover the focused element (WCAG 2.4.11). `scroll-padding-top` keeps focused items clear of it on desktop.
+- Outline buttons use a light border. Their text labels identify them. Empty inputs and checkboxes keep a border of at least 3:1.
 
 ### What remains (needs a person or the real API)
 
