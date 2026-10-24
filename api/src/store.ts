@@ -87,6 +87,9 @@ export class CloudStore implements CaseStore {
         await ref.collection('entries').doc(entryId).create(entry);
         return entry;
       } catch (error) {
+        // A successful write can lose its network response. Never remove photos for an entry that exists.
+        const saved = await ref.collection('entries').doc(entryId).get();
+        if (saved.exists) return saved.data() as Entry;
         await this.bucket.deleteFiles({ prefix: `cases/${caseId}/${entryId}/` });
         throw error;
       }

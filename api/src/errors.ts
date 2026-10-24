@@ -26,5 +26,7 @@ export const errorHandler: ErrorRequestHandler = (error, _request, response, nex
     console.error('Request failed.');
     failure = new ApiFailure('AI_UNAVAILABLE', 'The service is unavailable. Please try again.');
   }
+  response.removeHeader('Content-Type');
+  response.removeHeader('Content-Length');
   response.status(status[failure.code]).json({ error: { code: failure.code, message: failure.message } });
 };
