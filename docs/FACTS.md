@@ -39,3 +39,7 @@ The deployment script creates a dedicated `fixproof-run` service account. It can
 ## Live check of revision fixproof-00002-zg4
 
 Sid supplied the deployment output on 2026-10-24. Both frontend and API built and deployed. The generated-image request returned `502 AI_UNAVAILABLE`. The test case was deleted successfully. Key validity and model request compatibility are not yet established. Do not call the real-model integration complete.
+
+## Authentication failure confirmed in Cloud Run logs
+
+On 2026-10-24, the browser-visible Cloud Run logs for the 18:22:35 EDT test show `model_request_failed` with provider status `401`. The entries request lasted about 274 milliseconds. This identifies an authentication failure, not a timeout or a 429 rate-limit response. The validity and intended service of the saved key still need the direct diagnostic; no replacement key has been requested or installed.
