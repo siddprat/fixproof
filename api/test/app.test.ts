@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import { mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { once } from 'node:events';
+import { request } from './http.js';
 import { createApp } from '../src/app.js';
 import { loadConfig } from '../src/config.js';
 
@@ -24,26 +24,19 @@ test('hosted startup requires a key and never includes values in its error', () 
 test('health and API errors remain JSON while frontend routes use the SPA', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'fixproof-test-'));
   await writeFile(join(directory, 'index.html'), '<h1>FixProof test</h1>');
-  const server = createApp(loadConfig({ ...env, WEB_DIST: directory })).listen(0, '127.0.0.1');
+  const app = createApp(loadConfig({ ...env, WEB_DIST: directory }));
   try {
-    await once(server, 'listening');
-    const address = server.address();
-    assert.ok(address && typeof address === 'object');
-    const base = `http://127.0.0.1:${address.port}`;
-    const health = await fetch(`${base}/api/health`);
-    assert.deepEqual(await health.json(), { ok: true, model: env.GEMMA_MODEL, mode: 'hosted' });
-    const missing = await fetch(`${base}/api/not-a-route`);
+    const health = await request(app, 'GET', '/api/health');
+    assert.deepEqual(health.json(), { ok: true, model: env.GEMMA_MODEL, mode: 'hosted' });
+    const missing = await request(app, 'GET', '/api/not-a-route');
     assert.equal(missing.status, 404);
-    assert.equal((await missing.json() as { error: { code: string } }).error.code, 'NOT_FOUND');
-    const invalid = await fetch(`${base}/api/cases`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{',
-    });
+    assert.equal(missing.json().error.code, 'NOT_FOUND');
+    const invalid = await request(app, 'POST', '/api/cases', '{', { 'content-type': 'application/json' });
     assert.equal(invalid.status, 400);
-    assert.equal((await invalid.json() as { error: { code: string } }).error.code, 'BAD_REQUEST');
-    const page = await fetch(`${base}/entry/example`);
-    assert.equal(await page.text(), '<h1>FixProof test</h1>');
+    assert.equal(invalid.json().error.code, 'BAD_REQUEST');
+    const page = await request(app, 'GET', '/entry/example');
+    assert.equal(page.bytes.toString(), '<h1>FixProof test</h1>');
   } finally {
-    await new Promise<void>((resolve, reject) => server.close(error => error ? reject(error) : resolve()));
     await rm(directory, { recursive: true, force: true });
   }
 });
