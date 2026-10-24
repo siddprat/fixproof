@@ -13,7 +13,7 @@ Checked on 2026-10-24. Cloud setup results were supplied by Sid from Terminal.
 | Exact Gemma model ID | `gemma-4-26b-a4b-it` | Selected with Sid on 2026-10-24; live request pending |
 | Model license URL | https://www.apache.org/licenses/LICENSE-2.0 | Listed by Google model card on 2026-10-24 |
 | Hosted API terms URL | https://ai.google.dev/gemini-api/terms | Review pending |
-| Cloud Run URL | Pending deployment | Not deployed |
+| Cloud Run URL | https://fixproof-774631300212.us-east1.run.app | Initial health-only revision deployed; Sid supplied successful output on 2026-10-24 |
 | Hackathon credit and budget alert | Pending confirmation | Not verified |
 
 No API keys belong in this file.
@@ -22,8 +22,16 @@ No API keys belong in this file.
 
 - https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api lists the selected model and image input.
 - https://ai.google.dev/gemma/docs/core/model_card_4 lists Apache 2.0 as the model license.
-- Live API support for system instructions, JSON mode, response schemas, and several images still needs testing.
+- Google documents system instructions and image input for this model. JSON mode and response schema support are not documented on that Gemma page. The service attempts structured output and falls back to prompt-only JSON only after an explicit unsupported-feature error. Live capability testing is still pending.
 
 ## Deployment identity
 
 The deployment script creates a dedicated `fixproof-run` service account. It can access the API key secret, Firestore, and the photo bucket. The key stays in Secret Manager.
+
+## Validation status
+
+- Sid ran the initial build and two checks successfully before the first deploy.
+- The expanded API builds locally and passes 15 automated checks as of 2026-10-24.
+- Local route checks use in-memory test storage. They do not prove Cloud permissions or model quality.
+- The next deploy includes the frontend and runs a generated-image smoke check against real storage and the configured model. It deletes its test case afterward.
+- A human photo, adversarial-photo evaluation, phone test, and joint frontend test remain pending.
