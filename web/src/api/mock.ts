@@ -61,7 +61,9 @@ function readMode(): string | null {
   }
 }
 
-const wait = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+// Every mock call reads the URL first, so ?mock=off (or a new mode) applies on page load,
+// not only on the next AI call.
+const wait = (ms: number) => { readMode(); return new Promise<void>((r) => setTimeout(r, ms)); };
 const clone = <T,>(v: T): T => JSON.parse(JSON.stringify(v)) as T;
 
 function failIfAiModeSet(): void {
