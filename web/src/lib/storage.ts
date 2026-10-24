@@ -13,3 +13,14 @@ export function storageSet(key: string, value: string): void {
 export function storageRemove(key: string): void {
   try { window.localStorage.removeItem(key); } catch { /* ignore */ }
 }
+
+/** Names and unit for the email screen. Kept in this browser only. */
+export const DETAIL_KEYS = {
+  tenantName: "fixproof.tenantName",
+  landlordName: "fixproof.landlordName",
+  unit: "fixproof.unit",
+} as const;
+
+export function clearSavedDetails(): void {
+  for (const k of Object.values(DETAIL_KEYS)) storageRemove(k);
+}

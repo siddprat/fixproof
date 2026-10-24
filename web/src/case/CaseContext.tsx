@@ -3,8 +3,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { api, ApiClientError } from "../api/client";
-import type { CaseLog } from "../api/types";
-import { CASE_KEY, storageGet, storageRemove, storageSet } from "../lib/storage";
+import type { CaseLog, Entry } from "../api/types";
+import { CASE_KEY, clearSavedDetails, storageGet, storageRemove, storageSet } from "../lib/storage";
 
 type Status = "loading" | "ready" | "error";
 
@@ -19,6 +19,8 @@ interface CaseState {
   startFresh: () => Promise<void>;
   /** Retry the whole bootstrap after an error. */
   retry: () => void;
+  /** Put a created or patched entry into the local log without a refetch. */
+  upsertEntry: (entry: Entry) => void;
 }
 
 const CaseContext = createContext<CaseState | null>(null);
@@ -75,6 +77,7 @@ export function CaseProvider({ children }: { children: ReactNode }) {
 
   const startFresh = useCallback(async () => {
     storageRemove(CASE_KEY);
+    clearSavedDetails();
     const id = await createAndStore();
     setCaseId(id);
     setLog(await api.getCase(id));
@@ -83,9 +86,18 @@ export function CaseProvider({ children }: { children: ReactNode }) {
 
   const retry = useCallback(() => setAttempt((n) => n + 1), []);
 
+  const upsertEntry = useCallback((entry: Entry) => {
+    setLog((prev) => {
+      if (!prev) return prev;
+      const i = prev.entries.findIndex((e) => e.entryId === entry.entryId);
+      const entries = i === -1 ? [...prev.entries, entry] : prev.entries.map((e, j) => (j === i ? entry : e));
+      return { ...prev, entries };
+    });
+  }, []);
+
   const value = useMemo(
-    () => ({ status, caseId, log, error, refresh, startFresh, retry }),
-    [status, caseId, log, error, refresh, startFresh, retry],
+    () => ({ status, caseId, log, error, refresh, startFresh, retry, upsertEntry }),
+    [status, caseId, log, error, refresh, startFresh, retry, upsertEntry],
   );
   return <CaseContext.Provider value={value}>{children}</CaseContext.Provider>;
 }
