@@ -10,11 +10,38 @@ Status: hackathon build in progress
 
 ## Usage <!-- owner: friend -->
 
+Open the app on your phone. There is no account and no login. Your case lives in this browser.
+
+1. **Add a problem.** Tap "Add a problem". Take a photo or choose up to 3 from your phone. Add a short note if you want, by typing or with "Dictate your note". Tap Analyze.
+2. **Check the draft.** FixProof lists what it can see, the type of problem, where it is, and how urgent it looks. It also lists what the photo can't tell us. Every field is an AI draft. Fix anything that is wrong and tap Save changes.
+3. **Write an email.** Tap "Write an email". Pick the problems to include. Choose first email or follow-up. Add your name, your landlord's name, and your unit if you want (kept only in this browser). Edit the draft, then tap "Copy email" or "Open in my mail app". FixProof never sends anything for you.
+4. **Print a report.** Tap "Print report". It lists each problem oldest first with photos, the server time it was saved, and a fingerprint (SHA-256) for each photo. It checks each fingerprint and shows "Unchanged since saved". Tap "Print or save as PDF".
+5. **Delete my case.** On the log screen, tap "Delete my case" and confirm. This deletes every photo and note on the server and clears this browser. It cannot be undone.
+
+If a photo is unclear, the app says so and asks for a retake. If it is not a housing problem, the app says so and turns off email for that entry. If something may be urgent, a red banner says to call 911 if anyone is in danger, or the landlord's emergency maintenance line.
+
+For frontend development without the API: `cd web && cp .env.example .env.local && npm install && npm run dev`. Add `?mock=seed` to the URL for sample entries, `?mock=fail-ai` or `?mock=invalid` to see error states, and `?mock=off` to go back to normal.
+
 ## Accessibility <!-- owner: friend -->
+
+Target: WCAG 2.2 AA. Full results and what is still open: [docs/a11y-audit.md](docs/a11y-audit.md).
+
+- Works with a keyboard alone. A "Skip to main content" link comes first, focus moves to each new page's heading, and every focused control has a visible outline.
+- Screen readers: every control has a label, every photo has alt text (written by the AI and editable), and status messages and errors are announced.
+- Text contrast is at least 4.5 to 1 for every color pair, checked by `npm run contrast` in `web/`.
+- Tap targets are at least 44 px. Layout works at 320 px wide and at 200 percent zoom with no sideways scrolling.
+- Respects reduced motion. Prints in black on white.
+- Optional voice note with the browser's speech recognition. The app says this may send audio to Google or Apple.
+
+Automated results so far, on mock data: axe-core found 0 issues across 36 screen states, and Lighthouse accessibility scored 100. A real screen reader pass on a phone is still to do.
 
 ## Personas, composites <!-- owner: friend -->
 
+Pending. These will be written from our real interviews at the event ([script](docs/interviews.md)) and labeled as composites, not real people.
+
 ## Impact <!-- owner: friend -->
+
+Pending. We will report only measured results from the [timing test](docs/timing-test.md) and quotes people gave permission to use.
 
 ## Architecture <!-- owner: Sid -->
 
