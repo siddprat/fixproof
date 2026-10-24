@@ -8,7 +8,7 @@ RUN_SA="fixproof-run@${PROJECT_ID}.iam.gserviceaccount.com"
 MODEL=gemma-4-26b-a4b-it
 
 echo 'Installing and checking the API...'
-npm install --prefix api --no-audit --no-fund
+npm ci --prefix api --no-audit --no-fund
 npm run build --prefix api
 npm test --prefix api
 
@@ -47,4 +47,5 @@ gcloud run deploy fixproof --source . --project="$PROJECT_ID" --region="$REGION"
 
 RUN_URL=$(gcloud run services describe fixproof --project="$PROJECT_ID" --region="$REGION" --format='value(status.url)')
 echo "API deployed. Open: $RUN_URL/api/health"
-echo 'This first deploy serves the API health check. The photo routes come next.'
+echo 'Checking a generated test image through the live API...'
+npm run smoke --prefix api -- "$RUN_URL"
