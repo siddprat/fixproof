@@ -121,7 +121,7 @@ function ReportEntry({ entry, index, status }: { entry: Entry; index: number; st
         const s = status(p.photoId);
         return (
           <figure key={p.photoId} className="report-photo">
-            <PhotoImg photo={p} alt={entry.photos.length > 1 ? `${a.suggested_alt_text} (photo ${i + 1} of ${entry.photos.length})` : a.suggested_alt_text} />
+            <PhotoImg eager photo={p} alt={entry.photos.length > 1 ? `${a.suggested_alt_text} (photo ${i + 1} of ${entry.photos.length})` : a.suggested_alt_text} />
             <figcaption>
               <p className="report-photo-title">Photo {i + 1} of {entry.photos.length}</p>
               {p.exifTime && <p>Camera time (not verified): {formatDateTimeNY(p.exifTime)} Eastern</p>}

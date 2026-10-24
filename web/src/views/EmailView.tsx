@@ -73,7 +73,7 @@ export function EmailView() {
         landlordName: landlordName.trim() || undefined,
         unit: unit.trim() || undefined,
       });
-      setSubject(draft.subject);
+      setSubject(draft.subject.trim());
       setBody(draft.body);
       requestAnimationFrame(() => resultHeading.current?.focus());
     } catch (err) {
@@ -196,7 +196,14 @@ export function EmailView() {
           <p className="notice notice--info">{copy.aiNotice}</p>
           <div className="field">
             <label htmlFor={`${id}-subject`}>Subject</label>
-            <input id={`${id}-subject`} type="text" value={subject} onChange={(e) => setSubject(e.target.value)} />
+            <input
+              id={`${id}-subject`} type="text" value={subject} onChange={(e) => setSubject(e.target.value)}
+              aria-invalid={subject.trim() === "" ? true : undefined}
+              aria-describedby={subject.trim() === "" ? `${id}-subject-err` : undefined}
+            />
+            {subject.trim() === "" && (
+              <p id={`${id}-subject-err`} className="field-error">The subject is empty. Add one before you send, for example "Repair request".</p>
+            )}
           </div>
           <div className="field">
             <label htmlFor={`${id}-body`}>Message</label>
