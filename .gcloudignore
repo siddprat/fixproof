@@ -1,0 +1,10 @@
+.gcloudignore
+.git
+**/node_modules
+**/dist
+**/.env
+**/.env.*
+!**/.env.example
+**/*.log
+**/service-account*.json
+**/*.pem
