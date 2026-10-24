@@ -7,6 +7,7 @@ import { Page } from "../components/Page";
 import { api } from "../api/client";
 import { useCase } from "../case/CaseContext";
 import { copy, errorMessage } from "../copy";
+import { Dictate, appendDictation } from "../components/Dictate";
 
 const MAX_PHOTOS = 3;
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -96,7 +97,8 @@ export function NewView() {
           <legend className="visually-hidden">Photos and note</legend>
 
           <div className="row capture-buttons">
-            <button type="button" className="btn btn--primary" onClick={() => cameraInput.current?.click()} disabled={full}>
+            {/* One primary action: Take a photo until there is a photo, then Analyze. */}
+            <button type="button" className={`btn${photos.length === 0 ? " btn--primary" : ""}`} onClick={() => cameraInput.current?.click()} disabled={full}>
               Take a photo
             </button>
             <button type="button" className="btn" onClick={() => libraryInput.current?.click()} disabled={full}>
@@ -151,6 +153,7 @@ export function NewView() {
             <span className="hint" id={`${noteId}-count`}>
               {noteLeft} of {MAX_NOTE} characters left.
             </span>
+            <Dictate onText={(t) => setNote((n) => appendDictation(n, t, MAX_NOTE))} disabled={busy} />
           </div>
 
           <button type="submit" className="btn btn--primary btn--block" disabled={photos.length === 0}>

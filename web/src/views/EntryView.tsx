@@ -9,6 +9,7 @@ import { api } from "../api/client";
 import type { Category, Entry, Urgency } from "../api/types";
 import { useCase } from "../case/CaseContext";
 import { copy, errorCopy, errorMessage } from "../copy";
+import { Dictate, appendDictation } from "../components/Dictate";
 import { formatDateTimeNY } from "../lib/format";
 import { CATEGORIES, URGENCIES, categoryLabel, urgencyHint, urgencyLabel } from "../lib/labels";
 
@@ -184,6 +185,7 @@ function EntryScreen({ entry }: { entry: Entry }) {
             <div className="field">
               <label htmlFor={`${id}-note`}>Your note</label>
               <textarea id={`${id}-note`} value={draft.note} maxLength={1000} rows={3} onChange={(e) => set("note", e.target.value)} />
+              <Dictate onText={(t) => setDraft((d) => ({ ...d, note: appendDictation(d.note, t) }))} disabled={saving} />
             </div>
 
             <div className="field">
@@ -219,7 +221,7 @@ function EntryScreen({ entry }: { entry: Entry }) {
 
       <div className="row case-actions">
         {a.is_housing_problem ? (
-          <Link to={`/email?entry=${entry.entryId}`} className="btn btn--primary">Write an email about this</Link>
+          <Link to={`/email?entry=${entry.entryId}`} className="btn">Write an email about this</Link>
         ) : (
           <button type="button" className="btn" disabled aria-describedby={`${id}-noemail`}>Write an email about this</button>
         )}

@@ -177,7 +177,7 @@ export function EmailView() {
               onChange={(e) => setUnit(e.target.value)} onBlur={(e) => remember(DETAIL_KEYS.unit, e.target.value)} />
           </div>
 
-          <button type="submit" className="btn btn--primary btn--block">
+          <button type="submit" className={`btn btn--block${subject === null ? " btn--primary" : ""}`}>
             {subject === null ? "Write the email" : "Write it again"}
           </button>
         </fieldset>
