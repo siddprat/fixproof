@@ -98,3 +98,25 @@ test('unrelated photo returns 201 and cannot be selected for email', async () =>
   const email = await request(app, 'POST', `/api/cases/${caseId}/email`, JSON.stringify({ entryIds: [entry.entryId], type: 'first' }), jsonHeaders);
   assert.equal(email.status, 400);
 });
+
+test('three photos plus a note are accepted; the 51st entry is rejected before analysis', async () => {
+  const { app, store } = setup();
+  const caseId = await store.createCase();
+  const upload = multipart([await photo(), await photo(), await photo()], 'Three views');
+  const result = await request(app, 'POST', `/api/cases/${caseId}/entries`, upload.body, upload.headers);
+  assert.equal(result.status, 201, result.bytes.toString());
+  assert.equal(result.json().entry.photos.length, 3);
+  const log = store.cases.get(caseId)!;
+  log.entries = Array.from({ length: 50 }, () => ({ ...log.entries[0]!, entryId: randomUUID() }));
+  const blocked = await request(app, 'POST', `/api/cases/${caseId}/entries`, upload.body, upload.headers);
+  assert.equal(blocked.status, 400);
+  assert.equal(blocked.json().error.code, 'BAD_REQUEST');
+});
+
+test('incomplete multipart bodies are bad requests, not service failures', async () => {
+  const { app, store } = setup();
+  const caseId = await store.createCase();
+  const result = await request(app, 'POST', `/api/cases/${caseId}/entries`, 'unfinished upload', { 'content-type': 'multipart/form-data; boundary=test' });
+  assert.equal(result.status, 400);
+  assert.equal(result.json().error.code, 'BAD_REQUEST');
+});

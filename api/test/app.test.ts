@@ -40,3 +40,9 @@ test('health and API errors remain JSON while frontend routes use the SPA', asyn
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test('blank optional values from the env example use defaults', () => {
+  const config = loadConfig({ ...env, PORT: '', AI_MODE: '', OLLAMA_URL: '', OLLAMA_MODEL: '', WEB_DIST: '' });
+  assert.equal(config.PORT, 8080);
+  assert.equal(config.AI_MODE, 'hosted');
+});

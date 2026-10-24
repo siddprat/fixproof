@@ -76,13 +76,20 @@ export async function validatedGeneration<T>(generate: Generator, request: Gener
   for (let attempt = 0; attempt < 2; attempt++) {
     let text: string;
     try { text = await generate({ ...request, text: request.text + correction }); }
-    catch { throw new ApiFailure('AI_UNAVAILABLE', 'We could not reach the photo reader. Please try again.'); }
+    catch (error) {
+      const status = (error as { status?: number }).status;
+      console.error(JSON.stringify({ event: 'model_request_failed', status: typeof status === 'number' ? status : null }));
+      throw new ApiFailure('AI_UNAVAILABLE', 'We could not reach the photo reader. Please try again.');
+    }
     try {
       const clean = text.trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '');
       return schema.parse(JSON.parse(clean));
-    } catch {
-      // Never echo untrusted model output into a corrective instruction.
-      correction = '\nYour previous response failed validation. Return valid JSON matching the schema and all limits. Do not include commentary or code fences.';
+    } catch (error) {
+      // Include only schema paths and error codes, never untrusted model text.
+      const issues = error instanceof z.ZodError
+        ? error.issues.map(issue => ({ path: issue.path, code: issue.code }))
+        : [{ path: [], code: 'invalid_json' }];
+      correction = `\nYour previous response failed validation: ${JSON.stringify(issues)}. Return valid JSON matching the schema and all limits. Do not include commentary or code fences.`;
     }
   }
   throw new ApiFailure('AI_INVALID_OUTPUT', 'We could not read this reliably. Please try again.');

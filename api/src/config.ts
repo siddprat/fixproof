@@ -27,7 +27,8 @@ const schema = z.object({
 });
 
 export function loadConfig(env: NodeJS.ProcessEnv = process.env) {
-  const result = schema.safeParse(env);
+  const normalized = Object.fromEntries(Object.entries(env).map(([key, value]) => [key, value === '' ? undefined : value]));
+  const result = schema.safeParse(normalized);
   if (!result.success) {
     // Report only variable names, never the supplied values or secrets.
     throw new Error(`Check environment variables: ${[...new Set(result.error.issues.map(issue => issue.path.join('.')))].join(', ')}`);

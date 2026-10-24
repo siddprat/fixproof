@@ -15,6 +15,9 @@ export const errorHandler: ErrorRequestHandler = (error, _request, response, nex
   let failure: ApiFailure;
   if (error instanceof ApiFailure) failure = error;
   else if (error instanceof ZodError) failure = new ApiFailure('BAD_REQUEST', 'Check the fields and try again.');
+  else if (error instanceof Error && /^(Unexpected end of form|Malformed part header|Multipart: Boundary not found|Request aborted)/.test(error.message)) {
+    failure = new ApiFailure('BAD_REQUEST', 'The photo upload was incomplete. Please try again.');
+  }
   else if (error instanceof multer.MulterError) {
     failure = error.code === 'LIMIT_FILE_SIZE'
       ? new ApiFailure('PAYLOAD_TOO_LARGE', 'Each photo must be 8 MB or smaller.')
