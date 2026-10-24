@@ -13,6 +13,8 @@ export const copy = {
   emailNotice: "Read it before you send it. FixProof never sends anything for you.",
   deleteConfirm: "This deletes every photo and note. It cannot be undone.",
   hostedHonesty: "Photos are sent to Google's Gemini service to be read. Delete your case any time.",
+  // Not in the copy deck. Only shown when /api/health reports mode "local". Storage is still Google Cloud.
+  localHonesty: "Photos are read by a model on our own server, not sent to Gemini. They are stored in Google Cloud. Delete your case any time.",
 } as const;
 
 export const errorCopy: Record<ClientErrorCode, string> = {
