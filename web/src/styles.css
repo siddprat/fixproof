@@ -359,3 +359,18 @@ ul.plain { list-style: none; padding: 0; margin: 0; }
 }
 @keyframes spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; border-right-color: currentColor; opacity: 0.6; } }
+
+/* ---------- Entry ---------- */
+.photo-grid {
+  list-style: none; padding: 0; margin: 0 0 var(--space-4);
+  display: grid; gap: var(--space-3);
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+}
+.photo-grid img { width: 100%; border-radius: var(--radius); background: var(--surface-alt); }
+.notice-title { font-size: 1.1rem; margin: 0 0 var(--space-2); }
+.choice--hint { align-items: flex-start; padding: var(--space-2) 0; }
+.choice--hint input { margin-top: 0.2rem; }
+.choice-label { font-weight: 600; }
+.save-ok { margin-top: var(--space-3); }
+/* Grow textareas with their content where supported; rows is the fallback. */
+@supports (field-sizing: content) { textarea { field-sizing: content; min-height: 6rem; } }
