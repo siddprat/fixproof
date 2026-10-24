@@ -67,28 +67,32 @@ Changes that matter for accessibility:
 - [ ] Dictation was tested with a fake speech engine only. Try it on a real phone (Chrome on Android, Safari on iPhone).
 - [ ] Re-run axe and Lighthouse against the deployed Cloud Run build with the real API (F39).
 
-### Contrast detail
+### Contrast detail (current palette, Run 2)
 
 ```
-PASS  14.57:1  (need 4.5)  text on bg  body text
-PASS  15.65:1  (need 4.5)  text on surface  card text
-PASS  13.90:1  (need 4.5)  text on surface-alt  hover / hash block text
-PASS   7.05:1  (need 4.5)  text-muted on bg  muted text on page
-PASS   7.58:1  (need 4.5)  text-muted on surface  muted text in cards and footer
-PASS   6.73:1  (need 4.5)  text-muted on surface-alt  disabled button text
-PASS   6.85:1  (need 4.5)  primary on bg  links on page
-PASS   7.36:1  (need 4.5)  primary on surface  links in cards
-PASS   8.52:1  (need 4.5)  primary-hover on surface-alt  link hover
-PASS   7.36:1  (need 4.5)  on-primary on primary  primary button
-PASS   9.60:1  (need 4.5)  on-primary on primary-hover  primary button hover
-PASS   8.14:1  (need 4.5)  hazard-text on hazard-bg  hazard banner
-PASS   9.31:1  (need 4.5)  hazard-text on surface  danger button, field errors
-PASS   7.87:1  (need 4.5)  warn-text on warn-bg  warning panel
-PASS   7.65:1  (need 4.5)  ok-text on ok-bg  ok notice
-PASS   8.78:1  (need 4.5)  info-text on info-bg  info notice
-PASS   4.61:1  (need 3)  border-strong on surface  input borders (non-text)
-PASS   4.29:1  (need 3)  border-strong on bg  button borders on page (non-text)
-PASS   5.28:1  (need 3)  focus on bg  focus ring on page (non-text)
-PASS   5.67:1  (need 3)  focus on surface  focus ring in cards (non-text)
-PASS   5.29:1  (need 3)  hazard-border on surface  danger button border (non-text)
+PASS  19.06:1  (need 4.5)  text on bg  body text
+PASS  19.90:1  (need 4.5)  text on surface  card text
+PASS  18.10:1  (need 4.5)  text on surface-alt  hover / hash block text
+PASS   7.41:1  (need 4.5)  text-muted on bg  muted text on page
+PASS   7.73:1  (need 4.5)  text-muted on surface  muted text in cards and footer
+PASS   7.03:1  (need 4.5)  text-muted on surface-alt  disabled button text
+PASS  16.97:1  (need 4.5)  primary on bg  links on page
+PASS  17.72:1  (need 4.5)  primary on surface  links in cards
+PASS   9.50:1  (need 4.5)  primary-hover on surface-alt  link hover
+PASS  16.97:1  (need 4.5)  on-primary on primary  primary button
+PASS  10.01:1  (need 4.5)  on-primary on primary-hover  primary button hover
+PASS   7.60:1  (need 4.5)  hazard-text on hazard-bg  hazard banner
+PASS   8.31:1  (need 4.5)  hazard-text on surface  danger button, field errors
+PASS   7.96:1  (need 4.5)  hazard-text on bg  danger button on page
+PASS   7.03:1  (need 4.5)  text-muted on info-bg  muted text in info notices
+PASS   6.79:1  (need 4.5)  warn-text on bg  mock flag
+PASS   6.84:1  (need 4.5)  warn-text on warn-bg  warning panel
+PASS   6.81:1  (need 4.5)  ok-text on ok-bg  ok notice
+PASS  16.12:1  (need 4.5)  info-text on info-bg  info notice
+PASS   3.71:1  (need 3)  border-strong on surface  input borders (non-text)
+PASS   3.55:1  (need 3)  border-strong on bg  input borders on page (non-text)
+PASS   4.95:1  (need 3)  focus on bg  focus ring on page (non-text)
+PASS   5.17:1  (need 3)  focus on surface  focus ring in cards (non-text)
+PASS   4.83:1  (need 3)  hazard-border on surface  invalid field border (non-text)
+PASS  17.72:1  (need 3)  primary on surface  selected choice border (non-text)
 ```
