@@ -7,10 +7,14 @@ REGION=us-east1
 RUN_SA="fixproof-run@${PROJECT_ID}.iam.gserviceaccount.com"
 MODEL=gemma-4-26b-a4b-it
 
+echo 'Getting the latest shared code...'
+git pull --rebase origin main
+
 echo 'Installing and checking the API...'
 npm ci --prefix api --no-audit --no-fund
 npm run build --prefix api
 npm test --prefix api
+git push origin main
 
 echo 'Checking Google Cloud access...'
 gcloud projects describe "$PROJECT_ID" --format='value(projectId)'
@@ -41,7 +45,7 @@ gcloud storage buckets add-iam-policy-binding "gs://${PROJECT_ID}-fixproof-photo
 echo 'Building and deploying the API. This can take a few minutes...'
 gcloud run deploy fixproof --source . --project="$PROJECT_ID" --region="$REGION" \
   --service-account="$RUN_SA" --allow-unauthenticated \
-  --max-instances=2 --concurrency=4 --memory=512Mi --timeout=60 \
+  --max-instances=2 --concurrency=1 --memory=512Mi --timeout=60 \
   --set-env-vars="GOOGLE_CLOUD_PROJECT=$PROJECT_ID,GCS_BUCKET=${PROJECT_ID}-fixproof-photos,GEMMA_MODEL=$MODEL,AI_MODE=hosted" \
   --set-secrets=GEMINI_API_KEY=gemini-api-key:latest --quiet
 
