@@ -11,11 +11,10 @@ FixProof turns a phone photo of an apartment repair concern into an editable rep
 ## Demo <!-- owner: shared -->
 
 - [Open the live app](https://fixproof-774631300212.us-east1.run.app)
+- [Watch the demo video](https://drive.google.com/file/d/1xrY9BFWkIcnd2wkwOp81iHKMK5DkmshR/view?usp=sharing)
 - [Demo script and recording checklist](docs/demo/script.md)
 
 Try the full flow: add a repair photo, review and edit the observations, generate and copy an email, print the report, verify the photos, then delete the case. Hosted mode sends photos and notes to Google through the Gemini API.
-
-A demo video link has not yet been added.
 
 ## Usage <!-- owner: friend -->
 
