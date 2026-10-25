@@ -2,11 +2,20 @@
 
 Photo-based repair documentation for renters.
 
-Status: hackathon build in progress
+Status: working hackathon prototype. Final submission checks are in progress.
 
 ## What it does <!-- owner: shared -->
 
+FixProof turns a phone photo of an apartment repair concern into an editable report, a landlord email draft, and a timestamped photo record. It helps renters describe what they see and keep earlier reports together. AI suggestions need human review. FixProof never sends an email for you.
+
 ## Demo <!-- owner: shared -->
+
+- [Open the live app](https://fixproof-774631300212.us-east1.run.app)
+- [Demo script and recording checklist](docs/demo/script.md)
+
+Try the full flow: add a repair photo, review and edit the observations, generate and copy an email, print the report, verify the photos, then delete the case. Hosted mode sends photos and notes to Google through the Gemini API.
+
+A demo video link has not yet been added.
 
 ## Usage <!-- owner: friend -->
 
@@ -58,7 +67,7 @@ flowchart LR
 
 ## Model and license <!-- owner: Sid -->
 
-The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. Model access, image input, system instructions, and structured JSON passed live checks. A generated image completed the save, edit, verify, and delete flow. Real housing-photo and email checks remain pending.
+The selected model is `gemma-4-26b-a4b-it`, accessed through the Gemini API. Model access, image input, system instructions, and structured JSON passed live checks. A generated image completed the save, edit, verify, and delete flow. Sid reported a successful real-photo phone flow, including email, copying, printing, and deletion. The six-photo guardrail evaluation is still pending.
 
 - [Google's Gemma API guide](https://ai.google.dev/gemma/docs/core/gemma_on_gemini_api)
 - [Model card](https://ai.google.dev/gemma/docs/core/model_card_4) and [Apache 2.0 model license](https://www.apache.org/licenses/LICENSE-2.0)
@@ -118,7 +127,7 @@ This writes `docs/EVAL.md` and deletes its evaluation case. The report records m
 
 ## Deploy to Google Cloud <!-- owner: Sid -->
 
-Project: `fixproof-512621`. Region: `us-east1`. The full app deployed successfully. Revision `fixproof-00003-ljj` passed the live generated-image check. A real housing photo and the full phone flow still need testing.
+Project: `fixproof-512621`. Region: `us-east1`. The full app deployed successfully. Revision `fixproof-00003-ljj` passed the live generated-image check. Sid reported a successful real-photo phone flow. After the final frontend fixes are deployed, repeat that flow on a phone over cellular data.
 
 Services enabled: Cloud Run, Cloud Build, Artifact Registry, Firestore, Cloud Storage, and Secret Manager. Firestore uses native mode. The bucket `fixproof-512621-fixproof-photos` was created with uniform access and public access prevention.
 
@@ -149,6 +158,14 @@ Delete my case removes its Firestore records and stored photos. This does not er
 Records are timestamped and verifiable. A hash detects changes to stored bytes. It does not prove when a photo was taken, what it shows, or who took it.
 
 ## Known limits <!-- owner: shared -->
+
+- This is a hackathon prototype. AI observations can be wrong. It cannot establish a cause, diagnose a condition, or give a legal conclusion.
+- The six staged-photo evaluation is not yet complete. Its current status is recorded in [docs/EVAL.md](docs/EVAL.md).
+- Interview findings, measured time savings, and a final phone screen-reader pass are still pending. No impact or accuracy figures are claimed.
+- The optional Ollama adapter has not been tested on a laptop. Storage in this deployment still uses Google Cloud.
+- The case ID is the only access key. There is no account recovery if browser storage is lost.
+- Rate limits are per instance. They are not a strict project-wide spending cap.
+- A photo hash detects changed bytes. It does not prove what a photo shows or when it was taken.
 
 ## License <!-- owner: Sid -->
 
